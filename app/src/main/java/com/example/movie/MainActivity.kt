@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.movie.appModule.appModule
+import com.example.movie.bottomnavigation.NavEntry
 import com.example.movie.ui.theme.MovieTheme
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -27,7 +28,7 @@ class MainActivity : ComponentActivity() {
         }
         setContent {
             MovieTheme {
-
+                NavEntry()
             }
         }
     }
