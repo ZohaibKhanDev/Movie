@@ -1,10 +1,11 @@
-package com.example.movie.restapi
+package com.example.movie.tvseries.popular
+
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class PopularMovies(
+data class All_Popular(
     @SerialName("page")
     val page: Int,
     @SerialName("results")

@@ -62,6 +62,7 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     testImplementation(libs.junit)
+    testImplementation(libs.junit.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
@@ -73,21 +74,26 @@ dependencies {
     implementation(libs.ktor.client.content.negotiation)
     implementation(libs.ktor.client.serialization.kotlinx.json)
     implementation(libs.ktor.client.android)
-    val nav_version = "2.7.7"
-    implementation("androidx.navigation:navigation-compose:$nav_version")
     implementation("io.coil-kt:coil-compose:2.6.0")
     implementation("androidx.compose.material:material-icons-extended:1.6.3")
     // Room
     val room_version = "2.6.1"
 
     implementation("androidx.room:room-runtime:$room_version")
-    kapt ("androidx.room:room-compiler:$room_version")
+    kapt("androidx.room:room-compiler:$room_version")
     implementation("androidx.room:room-ktx:$room_version")
-    implementation ("androidx.core:core-splashscreen:1.0.0")
+    implementation("androidx.core:core-splashscreen:1.0.0")
     implementation(project.dependencies.platform("io.insert-koin:koin-bom:3.5.4"))
     implementation("io.insert-koin:koin-core")
     implementation("io.insert-koin:koin-android")
     implementation("io.insert-koin:koin-compose")
     implementation("io.insert-koin:koin-annotations:1.3.1")
-    implementation ("com.google.android.exoplayer:exoplayer:2.16.1")
+    implementation("com.google.android.exoplayer:exoplayer:2.16.1")
+    implementation("com.google.accompanist:accompanist-pager:0.28.0")
+
+    androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.6.8")
+// Needed for createAndroidComposeRule, but not createComposeRule:
+    debugImplementation("androidx.compose.ui:ui-test-manifest:1.6.8")
+    implementation ("androidx.navigation:navigation-compose:2.7.0-rc01")
+
 }

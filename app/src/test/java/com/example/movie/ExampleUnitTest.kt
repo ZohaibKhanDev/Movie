@@ -1,5 +1,6 @@
 package com.example.movie
 
+import com.example.movie.test.ValidPassword
 import org.junit.Test
 
 import org.junit.Assert.*
@@ -10,8 +11,26 @@ import org.junit.Assert.*
  * See [testing documentation](http://d.android.com/tools/testing).
  */
 class ExampleUnitTest {
+
     @Test
-    fun addition_isCorrect() {
-        assertEquals(4, 2 + 2)
+    fun isPasswordValid_less_expectedTrue(){
+        //Arrange
+        val validPassword = ValidPassword()
+        //Act
+        val result = validPassword.isPasswordValid("123")
+        //Assert
+        assertEquals("Password Should be More than 6 characters",result)
     }
+
+    @Test
+    fun isReverseValid_less_expectedTrue(){
+        //Arrange
+        val validPassword = ValidPassword()
+        //Act
+        val result = validPassword.reverseString("Hello")
+        //Assert
+        assertEquals("olleH",result)
+    }
+
+
 }

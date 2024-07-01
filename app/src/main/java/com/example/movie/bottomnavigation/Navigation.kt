@@ -3,14 +3,14 @@ package com.example.movie.bottomnavigation
 import android.annotation.SuppressLint
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Category
-import androidx.compose.material.icons.filled.Download
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.LiveTv
 import androidx.compose.material.icons.filled.Movie
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material.icons.outlined.Category
-import androidx.compose.material.icons.outlined.Download
+import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material.icons.outlined.Home
+import androidx.compose.material.icons.outlined.LiveTv
 import androidx.compose.material.icons.outlined.Movie
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material3.Icon
@@ -31,33 +31,81 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.example.movie.screens.AllMovies
+import com.example.movie.animation.ScaleTransitionDirection
+import com.example.movie.animation.scaleIntoContainer
+import com.example.movie.animation.scaleOutOfContainer
 import com.example.movie.screens.Detail
-import com.example.movie.screens.Download
+import com.example.movie.screens.FavScreen
 import com.example.movie.screens.HomeScreen
-import com.example.movie.screens.SearchScreen
+import com.example.movie.screens.PopularMovies
+import com.example.movie.screens.Tv_Series
 
 @Composable
 fun Navigaton(navController: NavHostController) {
 
 
     NavHost(navController = navController, startDestination = Screen.HomeScreen.route) {
-        composable(Screen.HomeScreen.route) {
+        composable(Screen.HomeScreen.route, enterTransition = {
+            scaleIntoContainer()
+        },
+            exitTransition = {
+                scaleOutOfContainer(direction = ScaleTransitionDirection.INWARDS)
+            },
+            popEnterTransition = {
+                scaleIntoContainer(direction = ScaleTransitionDirection.OUTWARDS)
+            },
+            popExitTransition = {
+                scaleOutOfContainer()
+            }) {
             HomeScreen(navController = navController)
         }
-        composable(Screen.AllMovies.route) {
-            AllMovies(navController = navController)
+        composable(Screen.PopularMovies.route, enterTransition = {
+            scaleIntoContainer()
+        },
+            exitTransition = {
+                scaleOutOfContainer(direction = ScaleTransitionDirection.INWARDS)
+            },
+            popEnterTransition = {
+                scaleIntoContainer(direction = ScaleTransitionDirection.OUTWARDS)
+            },
+            popExitTransition = {
+                scaleOutOfContainer()
+            }) {
+            PopularMovies(navController = navController)
         }
 
-        composable(Screen.Download.route) {
-            Download(navController = navController)
+        composable(Screen.Tv_Series.route, enterTransition = {
+            scaleIntoContainer()
+        },
+            exitTransition = {
+                scaleOutOfContainer(direction = ScaleTransitionDirection.INWARDS)
+            },
+            popEnterTransition = {
+                scaleIntoContainer(direction = ScaleTransitionDirection.OUTWARDS)
+            },
+            popExitTransition = {
+                scaleOutOfContainer()
+            }) {
+            Tv_Series(navController = navController)
         }
 
-        composable(Screen.Search.route) {
-            SearchScreen(navController = navController)
+        composable(Screen.Fav.route, enterTransition = {
+            scaleIntoContainer()
+        },
+            exitTransition = {
+                scaleOutOfContainer(direction = ScaleTransitionDirection.INWARDS)
+            },
+            popEnterTransition = {
+                scaleIntoContainer(direction = ScaleTransitionDirection.OUTWARDS)
+            },
+            popExitTransition = {
+                scaleOutOfContainer()
+            }) {
+            FavScreen(navController = navController)
         }
 
-        composable(Screen.DetailScreen.route + "/{id}/{title}/{des}/{pic}/{video}/{date}",
+        composable(
+            Screen.DetailScreen.route + "/{id}/{title}/{des}/{pic}/{video}/{date}/{star}",
             arguments = listOf(
                 navArgument("id") {
                     type = NavType.IntType
@@ -77,7 +125,22 @@ fun Navigaton(navController: NavHostController) {
                 navArgument("date") {
                     type = NavType.StringType
                 },
-            )
+
+                navArgument("star") {
+                    type = NavType.StringType
+                },
+            ), enterTransition = {
+                scaleIntoContainer()
+            },
+            exitTransition = {
+                scaleOutOfContainer(direction = ScaleTransitionDirection.INWARDS)
+            },
+            popEnterTransition = {
+                scaleIntoContainer(direction = ScaleTransitionDirection.OUTWARDS)
+            },
+            popExitTransition = {
+                scaleOutOfContainer()
+            }
         ) {
             val id = it.arguments?.getInt("id")
             val title = it.arguments?.getString("title")
@@ -85,7 +148,8 @@ fun Navigaton(navController: NavHostController) {
             val pic = it.arguments?.getString("pic")
             val video = it.arguments?.getString("video")
             val date = it.arguments?.getString("date")
-            Detail(navController = navController, id, title, des, pic, video,date)
+            val star = it.arguments?.getString("star")
+            Detail(navController = navController, id, title, des, pic, video, date,star)
         }
 
     }
@@ -109,22 +173,22 @@ sealed class Screen(
     object HomeScreen :
         Screen("Home", selectedIcon = Icons.Filled.Home, unSelectedIcon = Icons.Outlined.Home)
 
-    object AllMovies : Screen(
-        "AllMovies",
+    object PopularMovies : Screen(
+        "Popular",
         selectedIcon = Icons.Filled.Movie,
         unSelectedIcon = Icons.Outlined.Movie
     )
 
-    object Download : Screen(
-        "Download",
-        selectedIcon = Icons.Filled.Download,
-        unSelectedIcon = Icons.Outlined.Download
+    object Tv_Series : Screen(
+        "Tv_Series",
+        selectedIcon = Icons.Filled.LiveTv,
+        unSelectedIcon = Icons.Outlined.LiveTv
     )
 
-    object Search : Screen(
-        "Search",
-        selectedIcon = Icons.Filled.Search,
-        unSelectedIcon = Icons.Outlined.Search
+    object Fav : Screen(
+        "Fav",
+        selectedIcon = Icons.Filled.Favorite,
+        unSelectedIcon = Icons.Outlined.FavoriteBorder
     )
 
     object DetailScreen : Screen(
@@ -135,14 +199,13 @@ sealed class Screen(
 }
 
 
-
 @Composable
 fun BottomNavigation(navController: NavController) {
     val item = listOf(
         Screen.HomeScreen,
-        Screen.AllMovies,
-        Screen.Download,
-        Screen.Search
+        Screen.PopularMovies,
+        Screen.Tv_Series,
+        Screen.Fav
 
     )
 
